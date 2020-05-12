@@ -30,13 +30,12 @@
 	</properties>
 
 	<modules>
-		
 		<module>common</module>
 		<module>cloud-eureka-service</module>
 		<module>cloud-zuul-service</module>
 		<module>cloud-auth-service</module>
-		<module>cloud-company-service</module>
 		<module>cloud-user-service</module>
+		<module>cloud-company-service</module>
 		<module>cloud-stock-price-service</module>
   </modules>
 

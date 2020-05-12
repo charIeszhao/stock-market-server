@@ -1,5 +1,5 @@
 server:
-   port: 8084
+   port: 8081
 spring:
    application:
       name: cloud-user-service
@@ -20,8 +20,6 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
-      springframework:
-        security: DEBUG
 eureka:
    instance:
       preferIpAddress: true		#注册服务的IP，而不是服务器的名称

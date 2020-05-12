@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @EnableResourceServer
 @EnableAuthorizationServer
-@ComponentScan(basePackages={"com.iiht.stock"})
+@ComponentScan(basePackages={"com.demo.stock"})
 public class OAuthApplication {
 	private static final String KEY_USER = "user";
 	private static final String KEY_AUTHORITIES = "authorities";

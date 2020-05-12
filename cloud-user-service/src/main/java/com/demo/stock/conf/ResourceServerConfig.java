@@ -10,10 +10,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
 /**
- * 资源服务配置
- * @ EnableResourceServer 启用资源服务
- * @ EnableWebSecurity 启用web安全
- * @ EnableGlobalMethodSecurity 启用全局方法安全注解，就可以在方法上使用注解来对请求进行过滤
+ * Resource server configuration
+ * @ EnableResourceServer
+ * @ EnableWebSecurity
+ * @ EnableGlobalMethodSecurity
  */
 @Configuration
 @EnableResourceServer
