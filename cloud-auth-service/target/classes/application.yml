@@ -10,7 +10,7 @@ spring:
       driver-class-name: com.mysql.jdbc.Driver
       url: jdbc:mysql://127.0.0.1:3306/stockmarket?useUnicode=true&characterEncoding=utf-8
       username: root
-      password: 123456
+      password: passw0rd
    jpa:
       hibernate:
          database-platform: org.hibernate.dialect.MySQLDialect

@@ -1,8 +1,9 @@
 server:
-   port: 8084
+   port: 8083
+   contextPath: /price
 spring:
    application:
-      name: cloud-user-service
+      name: cloud-stock-price-service
    profiles:
       active: default
    datasource:

@@ -1,5 +1,5 @@
 server:
-   port: 8081
+   port: 8084
 spring:
    application:
       name: cloud-user-service
@@ -9,7 +9,7 @@ spring:
       driver-class-name: com.mysql.jdbc.Driver
       url: jdbc:mysql://127.0.0.1:3306/stockmarket?useUnicode=true&characterEncoding=utf-8
       username: root
-      password: 123456
+      password: passw0rd
    jpa:
       hibernate:
          database-platform: org.hibernate.dialect.MySQLDialect
@@ -20,6 +20,8 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
+      springframework:
+        security: DEBUG
 eureka:
    instance:
       preferIpAddress: true		#注册服务的IP，而不是服务器的名称
