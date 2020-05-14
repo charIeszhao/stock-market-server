@@ -18,43 +18,42 @@ import com.demo.stock.entity.UserEntity;
 import com.demo.stock.service.UserService;
 
 @RestController
-@RequestMapping("/api/user")
-//@CrossOrigin(origins="http://localhost:4200")
+@RequestMapping("/user")
 public class UserController {
 	@Autowired
 	private UserService userService;
-	
+
 	/**
 	 * 
 	 * @return
 	 */
 	@GetMapping
-	public List<UserEntity> findAllUsers(){
-		
-		return userService.findAllUsers();
+	public List<UserEntity> findAllUsers() {
+
+		return userService.getUsers();
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<UserEntity> regist(UserEntity user){
-		UserEntity userEntity = userService.registUser(user);
-		return ResponseEntity.status(HttpStatus.CREATED).body(userEntity); 
+	public ResponseEntity<UserEntity> register(UserEntity user) {
+		UserEntity userEntity = userService.register(user);
+		return ResponseEntity.status(HttpStatus.CREATED).body(userEntity);
 	}
-	
+
 	@PutMapping
-	public ResponseEntity<UserEntity> update(UserEntity user){
-		UserEntity userEntity = userService.updateUser(user);
-		return ResponseEntity.ok(userEntity); 
+	public ResponseEntity<UserEntity> update(UserEntity user) {
+		UserEntity userEntity = userService.update(user);
+		return ResponseEntity.ok(userEntity);
 	}
-	
-	@GetMapping("/active/{id}")
-	public ResponseEntity<UserEntity> active(@PathVariable Integer id){
-		UserEntity user = userService.activeUser(id);
-		return ResponseEntity.ok(user); 
+
+	@GetMapping("/activate/{id}")
+	public ResponseEntity<UserEntity> activate(@PathVariable Integer id) {
+		UserEntity user = userService.activate(id);
+		return ResponseEntity.ok(user);
 	}
-	
+
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<String> delete(@PathVariable Integer id){
+	public ResponseEntity<String> delete(@PathVariable Integer id) {
 		userService.delete(id);
 		return ResponseEntity.ok("Delete user successfully.");
 	}

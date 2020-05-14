@@ -11,12 +11,12 @@ import org.springframework.stereotype.Repository;
 import com.demo.stock.entity.UserEntity;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, Integer>{
-	
+public interface UserRepository extends JpaRepository<UserEntity, Integer> {
+
 	public UserEntity findById(Integer id);
-	
+
 	@Modifying
 	@Transactional
-	@Query(value = "update s_user u set u.conformed='1' where u.id=?",nativeQuery = true)
-	public int activeUser(@Param("id")Integer id);
+	@Query(value = "update s_user u set u.confirmed='1' where u.id=?", nativeQuery = true)
+	public int activate(@Param("id") Integer id);
 }

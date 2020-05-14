@@ -9,55 +9,55 @@ import com.demo.stock.entity.UserEntity;
 public interface UserService {
 
 	/**
-	 * ��ҳ��ѯ�û��б�
+	 * Get all users with pagination
 	 * 
 	 * @param page
 	 * @param pageSize
 	 * @return
 	 */
-	public Page<UserEntity> findAll(int page, int pageSize);
+	public Page<UserEntity> getUsers(int page, int pageSize);
 	
 	/**
-	 * ��ѯ�����û��б�
+	 * Get all users
 	 * 
 	 * @return
 	 */
-	public List<UserEntity> findAllUsers();
+	public List<UserEntity> getUsers();
 	
 	/**
-	 * ����ID��ѯһ���û�
+	 * Get user by user ID
 	 * 
 	 * @param 
 	 * @return
 	 */
-	public UserEntity findUserById(Integer id);
+	public UserEntity getUserById(Integer id);
 	
 	/**
-	 * ע��һ���û�
+	 * Register new user
 	 * 
 	 * @param user
 	 * @return
 	 */
-	public UserEntity registUser(UserEntity user);
+	public UserEntity register(UserEntity user);
 	
 	/**
-	 * �����û���Ϣ
+	 * Update user details
 	 * 
 	 * @param user
 	 * @return
 	 */
-	public UserEntity updateUser(UserEntity user);
+	public UserEntity update(UserEntity user);
 	
 	/**
-	 * �����û�
+	 * Activated user
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public UserEntity activeUser(Integer id);
+	public UserEntity activate(Integer id);
 	
 	/**
-	 * ɾ��һ���û�
+	 * Delete user
 	 * 
 	 * @param id
 	 */
