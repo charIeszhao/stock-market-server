@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="s_user")
+@Table(name="T_USER")
 public class UserEntity {
 	private Integer id;
 	private String userName;
@@ -18,13 +18,11 @@ public class UserEntity {
 	private String email;
 	private String mobileNum;
 	private String confirmed;
-	private Date crtDate;
-	private String crtName;
-	private String isActive;
+	private Date createdDate;
 	
 	@Id
 	@GeneratedValue
-	@Column(name="id")
+	@Column(name="ID")
 	public Integer getId() {
 		return id;
 	}
@@ -73,25 +71,11 @@ public class UserEntity {
 	public void setConfirmed(String confirmed) {
 		this.confirmed = confirmed;
 	}
-	@Column(name="CRT_DATE")
-	public Date getCrtDate() {
-		return crtDate;
+	@Column(name="CREATED_DATE")
+	public Date getCreatedDate() {
+		return createdDate;
 	}
-	public void setCrtDate(Date crtDate) {
-		this.crtDate = crtDate;
-	}
-	@Column(name="CRT_NAME")
-	public String getCrtName() {
-		return crtName;
-	}
-	public void setCrtName(String crtName) {
-		this.crtName = crtName;
-	}
-	@Column(name="IS_ACTIVE")
-	public String getIsActive() {
-		return isActive;
-	}
-	public void setIsActive(String isActive) {
-		this.isActive = isActive;
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 }
