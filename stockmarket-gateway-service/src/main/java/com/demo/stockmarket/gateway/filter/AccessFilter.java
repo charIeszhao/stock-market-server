@@ -21,9 +21,6 @@ public class AccessFilter extends ZuulFilter {
 	@Autowired
 	private TokenService tokenService;
 	
-	@Autowired
-	private AuthenticationService authService;
-
 	@Override
 	public String filterType() {
 		return FilterConstants.PRE_TYPE;
