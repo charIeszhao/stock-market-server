@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.demo.stockmarket.RequestContext;
 import com.demo.stockmarket.RequestContextManager;
 import com.demo.stockmarket.entity.Price;
+import com.demo.stockmarket.price.servcie.FileStorageService;
 import com.demo.stockmarket.price.servcie.PriceService;
 
 @RestController
@@ -26,10 +28,19 @@ public class PriceController {
 
 	@Autowired
 	private PriceService priceService;
+	
+	@Autowired
+	private FileStorageService fileStorageService;
 
 	@GetMapping
 	public List<Price> getPricesByCompanyId(@PathVariable int companyId, @RequestParam Date from, @RequestParam Date to) {
 		return priceService.getPricesByCompanyId(companyId, from, to);
+	}
+	
+	@PostMapping("/import")
+	public ResponseEntity<?> uploadExcel(@RequestParam("file") MultipartFile file) {
+		String fileName = fileStorageService.storeFile(file);
+		return ResponseEntity.status(HttpStatus.CREATED).body("File uploaded successfully. File size: " + file.getSize());
 	}
 
 	@PostMapping
