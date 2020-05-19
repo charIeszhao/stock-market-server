@@ -1,48 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.demo</groupId>
-	<artifactId>stockmarket</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
-
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.9.RELEASE</version>
+		<version>2.2.7.RELEASE</version>
 	</parent>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>Edgware.RELEASE</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<optional>true</optional>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+	<groupId>com.demo</groupId>
+	<artifactId>stockmarket</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>stockmarket</name>
+	<description>Demo project for Spring Boot</description>
+	<packaging>pom</packaging>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+		<spring-cloud.version>Hoxton.SR4</spring-cloud.version>
+		<stockmarket.version>0.0.1-SNAPSHOT</stockmarket.version>
+		<jjwt.version>0.9.1</jjwt.version>
 	</properties>
 
 	<modules>
-		<module>common</module>
-		<module>cloud-eureka-service</module>
-		<module>cloud-zuul-service</module>
-		<module>cloud-auth-service</module>
-		<module>cloud-user-service</module>
-		<module>cloud-company-service</module>
-		<module>cloud-stock-price-service</module>
-  </modules>
+		<module>stockmarket-common</module>
+		<module>stockmarket-eureka-server</module>
+		<module>stockmarket-gateway-service</module>
+		<module>stockmarket-company-service</module>
+		<module>stockmarket-user-service</module>
+		<module>stockmarket-price-service</module>
+		<module>stockmarket-exchange-service</module>
+	</modules>
 
 	<build>
 		<plugins>
@@ -51,6 +40,18 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<defaultGoal>compile</defaultGoal>
 	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+	</dependencies>
+
 </project>

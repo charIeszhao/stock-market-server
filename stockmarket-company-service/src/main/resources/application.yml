@@ -1,0 +1,30 @@
+server:
+   port: 8082
+spring:
+   application:
+      name: stockmarket-company-service
+   profiles:
+      active: default
+   datasource:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/stockmarket?useUnicode=true&characterEncoding=utf-8
+      username: root
+      password: passw0rd
+   jpa:
+      hibernate:
+         database-platform: org.hibernate.dialect.MySQLDialect
+         ddl-auto: update
+         show-sql: true
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+eureka:
+   instance:
+      preferIpAddress: true
+      client: 
+         registerWithEureka: true
+         fetchRegistry: true
+         serviceUrl: 
+            defaultZone: http://localhost:8761/eureka/
