@@ -1,12 +1,12 @@
 package com.demo.stockmarket.user;
 
-import static org.mockito.Mockito.when;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.hibernate.mapping.Map;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,7 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.MultiValueMap;
 
 import com.demo.stockmarket.entity.User;
 import com.demo.stockmarket.user.controller.UserController;
@@ -53,6 +52,7 @@ public class UserApplicationTests {
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(userController).addFilters(new CORSFilter()).build();
+		
 	}
 
 	@Test
@@ -69,18 +69,45 @@ public class UserApplicationTests {
 		String json = om.writeValueAsString(newUser);
 
 		MvcResult result = mockMvc.perform(post("/user").content(json).contentType(MediaType.APPLICATION_JSON_VALUE))
-				.andExpect(status().isCreated()).andReturn();
+				.andExpect(status().isOk()).andReturn();
 
 		when(service.getUserByEmail("admin@stockmarket.com")).thenReturn(newUser);
 	}
 
 	@Test
 	public void getUsers() throws Exception {
-		MvcResult result = mockMvc.perform(
-				get("/user").param("page", "0").param("pageSize", "5").contentType(MediaType.APPLICATION_JSON_VALUE))
+		User newUser1 = new User();
+		newUser1.setEmail("test1@stockmarket.com");
+		newUser1.setPassword("test");
+		newUser1.setRole("ADMIN");
+		newUser1.setAddress("test address");
+		newUser1.setFirstName("First1");
+		newUser1.setLastName("Last1");
+		newUser1.setActive(0);
+		
+		User newUser2 = new User();
+		newUser2.setEmail("test2@stockmarket.com");
+		newUser2.setPassword("test");
+		newUser2.setRole("USER");
+		newUser2.setAddress("test address");
+		newUser2.setFirstName("First2");
+		newUser2.setLastName("Last2");
+		newUser2.setActive(0);
+		
+		String json1 = om.writeValueAsString(newUser1);
+		String json2 = om.writeValueAsString(newUser2);
+		
+		mockMvc.perform(post("/user").content(json1).contentType(MediaType.APPLICATION_JSON_VALUE))
+		.andExpect(status().isOk()).andReturn();
+		
+		mockMvc.perform(post("/user").content(json2).contentType(MediaType.APPLICATION_JSON_VALUE))
+		.andExpect(status().isOk()).andReturn();
+		
+		mockMvc.perform(get("/user/all")
+				.header("user.email", "test1@stockmarket.com")
+				.header("user.role", "ADMIN")
+				.contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(status().isOk()).andReturn();
-		
-		
 	}
 
 }
