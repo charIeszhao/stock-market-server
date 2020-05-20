@@ -9,6 +9,8 @@ gradle-app.setting
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
 
+### VS code
+.vscode/
 
 ### JetBrains template
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
@@ -113,6 +115,7 @@ hs_err_pid*
 
 
 ### Maven template
+.mvn/
 target/
 pom.xml.tag
 pom.xml.releaseBackup
