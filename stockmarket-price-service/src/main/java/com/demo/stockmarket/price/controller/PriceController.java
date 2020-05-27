@@ -1,5 +1,6 @@
 package com.demo.stockmarket.price.controller;
 
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,9 +40,15 @@ public class PriceController {
 	}
 	
 	@PostMapping("/import")
-	public ResponseEntity<?> uploadExcel(@RequestParam("file") MultipartFile file) {
-		String fileName = fileStorageService.storeFile(file);
-		return ResponseEntity.status(HttpStatus.CREATED).body("File uploaded successfully. File size: " + file.getSize());
+	public ResponseEntity<?> importExcel(@RequestParam("file") MultipartFile file) {
+		try {
+			InputStream stream = file.getInputStream();
+			priceService.importFromExcel(stream);
+			return ResponseEntity.status(HttpStatus.CREATED).body("File uploaded successfully. File size: " + file.getSize());
+			
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
 	}
 
 	@PostMapping
@@ -50,11 +58,11 @@ public class PriceController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@PathVariable int companyId, @RequestParam double price, @RequestParam String dateStr) {
+	public ResponseEntity<?> update(@PathVariable int companyId, @RequestBody Price price) {
 		RequestContext requestContext = RequestContextManager.getContext();
 		String role = requestContext.getRole();
 
-		Price priceObj = priceService.updatePrice(companyId, price, new Date(dateStr));
+		Price priceObj = priceService.updatePrice(companyId, price);
 		if (priceObj != null) {
 			return ResponseEntity.ok(priceObj);
 		} else {

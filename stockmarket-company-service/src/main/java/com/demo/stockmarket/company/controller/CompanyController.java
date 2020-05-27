@@ -30,6 +30,12 @@ public class CompanyController {
 	public Page<Company> findAllCompanies(@RequestParam int page, @RequestParam int pageSize) {
 		return companyService.getCompanies(page, pageSize);
 	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Company> getCompanyById(@PathVariable int id) {
+		Company company = companyService.getCompanyById(id);
+		return ResponseEntity.ok(company);
+	}
 
 	@PostMapping
 	public ResponseEntity<Company> create(@RequestBody Company company) {

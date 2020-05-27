@@ -30,10 +30,27 @@ public class UserController {
 	
 	@GetMapping
 	public RestResponse<?> findAllUsersWithPagination(@RequestParam int page, @RequestParam int pageSize) {
-		Page<User> pageContent = userService.getUsers(page, pageSize);
-		List<User> users = pageContent.getContent();
-		long total = pageContent.getTotalElements();
-		return RestResponse.ok(users, total, "Get users successfully.");
+		RequestContext requestContext = RequestContextManager.getContext();
+		String role = requestContext.getRole();
+		
+		if (role.equals("ADMIN")) {
+			Page<User> pageContent = userService.getUsers(page, pageSize);
+			List<User> users = pageContent.getContent();
+			long total = pageContent.getTotalElements();
+			return RestResponse.ok(users, total, "Get users successfully.");
+			
+		} else {
+			return RestResponse.error(HttpStatus.FORBIDDEN.value(), "Do not have permission to update current user.");
+		}
+	}
+	
+	@GetMapping("/info")
+	public RestResponse<User> getUserInfo() {
+		RequestContext requestContext = RequestContextManager.getContext();
+		String email = requestContext.getEmail();
+		
+		User user = userService.getUserByEmail(email);
+		return RestResponse.ok(user, "Get user info successfully.");
 	}
 	
 	@GetMapping("/all")

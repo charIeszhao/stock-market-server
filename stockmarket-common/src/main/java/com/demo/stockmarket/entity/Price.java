@@ -33,6 +33,9 @@ public class Price {
 	@Column(name = "date")
 	private Date date;
 	
+	@Column(name = "time")
+	private Date time;
+	
 	@Column(name = "price")
 	private double price;
 

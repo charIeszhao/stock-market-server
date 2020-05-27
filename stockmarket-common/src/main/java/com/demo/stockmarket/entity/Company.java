@@ -30,7 +30,7 @@ public class Company {
 	private String name;
 	
 	@ManyToOne
-	@JoinColumn(name = "exchange_id")
+	@JoinColumn(name = "exchange_name", referencedColumnName = "name", nullable = true)
 	private Exchange exchange;
 	
 	@Column(name = "ceo_name")

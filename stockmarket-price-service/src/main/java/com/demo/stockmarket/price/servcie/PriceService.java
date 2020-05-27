@@ -1,5 +1,8 @@
 package com.demo.stockmarket.price.servcie;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -9,9 +12,11 @@ public interface PriceService {
 	
 	public List<Price> getPricesByCompanyId(int companyId, Date fromDate, Date toDate);
 	
+	public List<Price> importFromExcel(InputStream stream) throws IOException, ParseException;
+	
 	public Price addPrice(int companyId, double price);
 	
-	public Price updatePrice(int companyId, double price, Date date);
+	public Price updatePrice(int companyId, Price price);
 	
 	public void deletePrice(int id);
 
