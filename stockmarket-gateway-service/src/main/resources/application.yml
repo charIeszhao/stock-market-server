@@ -30,7 +30,7 @@ zuul:
          path: /user/**
          url: http://localhost:8081/user
       stockmarket-company-service:
-         path: /admin/**
+         path: /company/**
          url: http://localhost:8082/company
       stockmarket-exchange-service:
          path: /exchange/**
