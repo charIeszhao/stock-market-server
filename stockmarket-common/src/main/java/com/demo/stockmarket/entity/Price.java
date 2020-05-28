@@ -15,28 +15,25 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="t_price")
+@Table(name = "t_price")
 @NoArgsConstructor
 @Getter
 @Setter
 public class Price {
-	
+
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
 	private int id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "company_id")
 	private Company company;
-	
-	@Column(name = "date")
-	private Date date;
-	
-	@Column(name = "time")
-	private Date time;
-	
-	@Column(name = "price")
+
+	@Column(name = "date_time")
+	private Date dateTime;
+
+	@Column(name = "price", precision = 5, scale = 2)
 	private double price;
 
 }

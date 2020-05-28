@@ -1,10 +1,11 @@
 package com.demo.stockmarket.price.servcie.impl;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -23,81 +24,79 @@ import com.demo.stockmarket.price.servcie.PriceService;
 
 @Service
 public class PriceServiceImpl implements PriceService {
-	
+
 	@Autowired
 	private PriceRepository priceRepository;
-	
+
 	@Autowired
 	private CompanyRepository companyRepository;
 
 	@Override
-	public List<Price> getPricesByCompanyId(int companyId, Date fromDate, Date toDate) {
-		return null;
+	public List<Price> getCompanyStockPricesBetweenDates(int companyId, Date from, Date to) {
+		return priceRepository.findAllByDatesBetween(companyId, from, to);
 	}
 
 	@Override
-	public List<Price> importFromExcel(InputStream stream) throws IOException, RuntimeException, ParseException {
-		// Create Workbook instance holding reference to .xlsx file
-		XSSFWorkbook workbook = new XSSFWorkbook(stream);
-		Iterator<Sheet> sheetIterator = workbook.iterator();
-		
-		List<Price> importedPrices = new ArrayList<Price>();
-		
-		while(sheetIterator.hasNext()) {
-			Sheet sheet = sheetIterator.next();
-			Iterator<Row> rowIterator = sheet.iterator();
-			while (rowIterator.hasNext()) {
-				Row row = rowIterator.next();
-				if (row.getRowNum() == 0) {
-					continue;
-				}
-				
-				Price entry = new Price();
-				
-//				int companyId = Integer.parseInt(row.getCell(0).getStringCellValue());
-				int companyId = (int) row.getCell(0).getNumericCellValue();
-				if (companyRepository.existsById(companyId)) {
-					entry.setCompany(companyRepository.findById(companyId).get());
-				} else {
-					throw new RuntimeException("Company does not exist!");
-				}
-				
-				entry.setPrice(row.getCell(1).getNumericCellValue());
-				entry.setDate(row.getCell(2).getDateCellValue());
-				
-				DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
-				entry.setTime(dateFormat.parse(row.getCell(3).getStringCellValue()));
-				
-				importedPrices.add(entry);
-				// For each row, iterate through all the columns
-//				Iterator<Cell> cellIterator = row.cellIterator();
+	public List<Price> getCompanyStockPricesByDate(int companyId, Date date) {
+		LocalDate from = convertDateToLocalDate(date);
+		Date to = convertLocalDateToDate(from.plusDays(1));
+		return priceRepository.findAllByDatesBetween(companyId, date, to);
+	}
 
-//				while (cellIterator.hasNext()) {
-//					Cell cell = cellIterator.next();
-//					switch (cell.getCellType()) {
-//					case NUMERIC:
-//						System.out.print(cell.getNumericCellValue() + "t");
-//						break;
-//					case STRING:
-//						System.out.print(cell.getStringCellValue() + "t");
-//						break;
-//					default:
-//						break;
-//					}
-//				}
-//				System.out.println("");
+	@Override
+	public List<Price> importFromExcel(InputStream stream) throws RuntimeException {
+		try {
+			XSSFWorkbook workbook = new XSSFWorkbook(stream);
+			Iterator<Sheet> sheetIterator = workbook.iterator();
+
+			List<Price> importedPrices = new ArrayList<Price>();
+
+			while (sheetIterator.hasNext()) {
+				Sheet sheet = sheetIterator.next();
+				Iterator<Row> rowIterator = sheet.iterator();
+				while (rowIterator.hasNext()) {
+					Row row = rowIterator.next();
+					if (row.getRowNum() == 0) {
+						continue;
+					}
+
+					Price entry = new Price();
+
+					int companyId = (int) row.getCell(0).getNumericCellValue();
+					if (companyRepository.existsById(companyId)) {
+						entry.setCompany(companyRepository.findById(companyId).get());
+					} else {
+						throw new RuntimeException("Company does not exist!");
+					}
+
+					entry.setPrice(row.getCell(1).getNumericCellValue());
+
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					String date = dateFormat.format(row.getCell(2).getDateCellValue());
+					String time = row.getCell(3).getStringCellValue();
+
+					DateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					entry.setDateTime(dateTimeFormat.parse(date + " " + time));
+
+					importedPrices.add(entry);
+				}
 			}
-		}
-		
-		if (!importedPrices.isEmpty()) {
-			Iterable<Price> iterable = importedPrices;
-			importedPrices = priceRepository.saveAll(iterable);
-		}
-		
-		workbook.close();
-		stream.close();
-		return importedPrices;
 
+			if (!importedPrices.isEmpty()) {
+				Iterable<Price> iterable = importedPrices;
+				importedPrices = priceRepository.saveAll(iterable);
+			}
+
+			if (workbook != null) {
+				workbook.close();
+			}
+			stream.close();
+
+			return importedPrices;
+
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to import data from excel.");
+		}
 	}
 
 	@Override
@@ -116,5 +115,14 @@ public class PriceServiceImpl implements PriceService {
 	public void deletePrice(int id) {
 		// TODO Auto-generated method stub
 
+	}
+
+	private LocalDate convertDateToLocalDate(Date date) {
+		Instant instant = date.toInstant();
+		return instant.atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+
+	private Date convertLocalDateToDate(LocalDate localDate) {
+		return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 	}
 }

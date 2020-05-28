@@ -10,7 +10,9 @@ import com.demo.stockmarket.entity.Price;
 
 public interface PriceService {
 	
-	public List<Price> getPricesByCompanyId(int companyId, Date fromDate, Date toDate);
+	public List<Price> getCompanyStockPricesBetweenDates(int companyId, Date fromDate, Date toDate);
+	
+	public List<Price> getCompanyStockPricesByDate(int companyId, Date date);
 	
 	public List<Price> importFromExcel(InputStream stream) throws IOException, ParseException;
 	

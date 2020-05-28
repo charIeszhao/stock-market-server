@@ -15,6 +15,8 @@ spring:
          database-platform: org.hibernate.dialect.MySQLDialect
          ddl-auto: update
          show-sql: true
+   jackson:
+      time-zone: UTC
    servlet:
       multipart:
          enabled: true
