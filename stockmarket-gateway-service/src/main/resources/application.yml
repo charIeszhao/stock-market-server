@@ -29,7 +29,7 @@ zuul:
       stockmarket-user-service:
          path: /user/**
          url: http://localhost:8081/user
-      stockmarket-admin-service:
+      stockmarket-company-service:
          path: /admin/**
          url: http://localhost:8082/company
       stockmarket-exchange-service:
