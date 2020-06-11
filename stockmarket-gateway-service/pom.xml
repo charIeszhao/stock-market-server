@@ -6,7 +6,7 @@
 		<groupId>com.demo</groupId>
 		<artifactId>stockmarket</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>stockmarket-gateway-service</artifactId>
 	<name>stockmarket-gateway-service</name>
