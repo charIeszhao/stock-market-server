@@ -1,4 +1,4 @@
-INSERT INTO stockmarket.t_company
+INSERT IGNORE INTO stockmarket.t_company
 (id, name, board_members, ceo_name, description)
 VALUES
 (500112, 'State Bank of India', 'John Doe, Jane Doe', 'John Doe', 'State Bank of India'),

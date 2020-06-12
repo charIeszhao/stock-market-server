@@ -1,4 +1,4 @@
-INSERT INTO stockmarket.t_exchange
+INSERT IGNORE INTO stockmarket.t_exchange
 (name, address, description)
 VALUES
 ('BSE', 'Dalal Street, Mumbai, India', 'Bombay Stock Exchange Ltd.'),

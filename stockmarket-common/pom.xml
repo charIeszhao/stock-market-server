@@ -9,6 +9,7 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>stockmarket-common</artifactId>
+	<version>${stockmarket.version}</version>
 
 	<dependencies>
 		<dependency>
