@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.stockmarket.entity.Price;
+import com.demo.stockmarket.price.model.PriceHistory;
+import com.demo.stockmarket.price.model.SectorPrice;
 import com.demo.stockmarket.price.repository.CompanyRepository;
 import com.demo.stockmarket.price.repository.PriceRepository;
 import com.demo.stockmarket.price.servcie.PriceService;
@@ -32,8 +34,16 @@ public class PriceServiceImpl implements PriceService {
 	private CompanyRepository companyRepository;
 
 	@Override
-	public List<Price> getCompanyStockPricesBetweenDates(int companyId, Date from, Date to) {
-		return priceRepository.findAllByDatesBetween(companyId, from, to);
+	public List<Price> getCompanyStockPrices(int companyId, Date from, Date to) {
+		if (from == null || to == null) {
+			return priceRepository.findAllByCompanyId(companyId);
+		} else {
+			if (from.equals(to)) {
+				return this.getCompanyStockPricesByDate(companyId, from);
+			} else {
+				return priceRepository.findAllByDatesBetween(companyId, from, to);
+			}
+		}
 	}
 
 	@Override
@@ -41,6 +51,17 @@ public class PriceServiceImpl implements PriceService {
 		LocalDate from = convertDateToLocalDate(date);
 		Date to = convertLocalDateToDate(from.plusDays(1));
 		return priceRepository.findAllByDatesBetween(companyId, date, to);
+	}
+
+	@Override
+	public PriceHistory getCompanyStockHistory(int companyId) {
+		List<Price> prices = priceRepository.getLatestAndPriorPrices(companyId);
+		PriceHistory history = new PriceHistory();
+		history.setCompanyId(prices.get(0).getCompany().getId());
+		history.setCompanyName(prices.get(0).getCompany().getName());
+		history.setLatestPrice(prices.get(0).getPrice());
+		history.setPriorPrice(prices.get(prices.size() - 1).getPrice());
+		return history;
 	}
 
 	@Override
@@ -124,5 +145,16 @@ public class PriceServiceImpl implements PriceService {
 
 	private Date convertLocalDateToDate(LocalDate localDate) {
 		return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+	}
+
+	@Override
+	public List<SectorPrice> getSectorPrices() {
+		List<SectorPrice> prices = new ArrayList<SectorPrice>();
+		prices.add(new SectorPrice("Energy", -0.46));
+		prices.add(new SectorPrice("Financial", 0.33));
+		prices.add(new SectorPrice("Health Care	", 3.31));
+		prices.add(new SectorPrice("Industrial", 1.89));
+		prices.add(new SectorPrice("Information Technology", 4.17));
+		return prices;
 	}
 }

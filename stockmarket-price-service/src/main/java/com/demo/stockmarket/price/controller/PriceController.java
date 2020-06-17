@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.demo.stockmarket.RequestContext;
 import com.demo.stockmarket.RequestContextManager;
 import com.demo.stockmarket.entity.Price;
+import com.demo.stockmarket.price.model.PriceHistory;
+import com.demo.stockmarket.price.model.SectorPrice;
 import com.demo.stockmarket.price.response.ImportResponse;
 import com.demo.stockmarket.price.servcie.PriceService;
 
@@ -31,13 +34,19 @@ public class PriceController {
 
 	@Autowired
 	private PriceService priceService;
-	
+
 	@GetMapping("/{companyId}")
-	public List<Price> getPricesBetweenDates(
+	public List<Price> getPrices(
+			@PathVariable int companyId) {
+		return priceService.getCompanyStockPrices(companyId, null, null);
+	}
+	
+	@GetMapping("/{companyId}/{from}/{to}")
+	public List<Price> getPrices(
 			@PathVariable int companyId, 
-			@RequestParam("from") @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ") Date fromDate, 
-			@RequestParam("to") @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ") Date toDate) {
-		return priceService.getCompanyStockPricesBetweenDates(companyId, fromDate, toDate);
+			@PathVariable(name="from", required=false) @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ") Date fromDate, 
+			@PathVariable(name="to", required=false) @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ") Date toDate) {
+		return priceService.getCompanyStockPrices(companyId, fromDate, toDate);
 	}
 	
 	@GetMapping("/{companyId}/{date}")
@@ -45,6 +54,17 @@ public class PriceController {
 			@PathVariable int companyId, 
 			@PathVariable("date") @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ") Date date) {
 		return priceService.getCompanyStockPricesByDate(companyId, date);
+	}
+
+	@GetMapping("/{companyId}/history")
+	public PriceHistory getPriceHistory(
+			@PathVariable int companyId) {
+		return priceService.getCompanyStockHistory(companyId);
+	}
+
+	@GetMapping("/sectorPrices")
+	public List<SectorPrice> getSectorPrices() {
+		return priceService.getSectorPrices();
 	}
 	
 	@PostMapping("/import")

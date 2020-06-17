@@ -12,7 +12,12 @@ import com.demo.stockmarket.entity.Price;
 @Repository
 public interface PriceRepository extends JpaRepository<Price, Integer> {
 
+	@Query(value = "select * from t_price p where p.company_id = ?", nativeQuery = true)
+	List<Price> findAllByCompanyId(int companyId);
+
 	@Query(value = "select * from t_price p where p.company_id = ? and p.date_time >= ? and p.date_time < ?", nativeQuery = true)
 	List<Price> findAllByDatesBetween(int companyId, Date from, Date to);
 
+	@Query(value = "select * from t_price p where p.company_id=? order by p.id desc limit 14", nativeQuery = true)
+	List<Price> getLatestAndPriorPrices(int companyId);
 }

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import com.demo.stockmarket.RequestContext;
 import com.demo.stockmarket.RequestContextManager;
 import com.demo.stockmarket.company.service.CompanyService;
@@ -29,6 +31,11 @@ public class CompanyController {
 	@GetMapping
 	public Page<Company> findAllCompanies(@RequestParam int page, @RequestParam int pageSize) {
 		return companyService.getCompanies(page, pageSize);
+	}
+
+	@GetMapping("/all")
+	public List<Company> findAllCompanies() {
+		return companyService.getCompanies();
 	}
 	
 	@GetMapping("/{id}")
